@@ -29,8 +29,9 @@ def parse(req_body):
   payload['data']['signedTransactionInfo'] = signedTransactionInfo
 
   # decode signedRenewalInfo & substitute decoded into payload
-  signedRenewalInfo = _decode_jws(payload['data']['signedRenewalInfo'])
-  payload['data']['signedRenewalInfo'] = signedRenewalInfo
+  if 'signedRenewalInfo' in payload['data']:
+    signedRenewalInfo = _decode_jws(payload['data']['signedRenewalInfo'])
+    payload['data']['signedRenewalInfo'] = signedRenewalInfo
 
   return payload
 
