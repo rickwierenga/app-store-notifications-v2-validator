@@ -2,10 +2,14 @@
 
 Read and validate [App Store Server Notifications V2](https://developer.apple.com/documentation/appstoreservernotifications/app_store_server_notifications_v2).
 
+```
+pip install app-store-notifications-v2-validator
+```
+
 ## Usage
 
 ```py
-import appstore_notifications_v2_validator as asn2
+import app_store_notifications_v2_validator as asn2
 request_body = b'{"signedPayload":"eyJh .... "}'
 try:
 	data = asn2.parse(request_body)
