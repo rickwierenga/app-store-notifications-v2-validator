@@ -1,10 +1,12 @@
 # AppStore Notifications V2 Validator
 
-Read and validate [App Store Server Notifications V2](https://developer.apple.com/documentation/appstoreservernotifications/app_store_server_notifications_v2).
+Library to read and validate [App Store Server Notifications V2](https://developer.apple.com/documentation/appstoreservernotifications/app_store_server_notifications_v2) in Python.
 
 ```
 pip install app-store-notifications-v2-validator
 ```
+
+Download "Apple Root CA - G3 Root" from https://www.apple.com/certificateauthority/. Store the file path in an environment variable named `APPLE_ROOT_CA` or put it in the directory where the code is run.
 
 ## Usage
 
@@ -57,5 +59,5 @@ except InvalidTokenError:
 
 ---
 
-&copy; 2022 Rick Wierenga
+&copy; 2022-2023 Rick Wierenga
 
