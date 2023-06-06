@@ -19,7 +19,7 @@ def add_labels(key: str) -> bytes:
 def _get_root_cert(root_cert_path):
 
   fn = os.environ.get("APPLE_ROOT_CA")
-  if not fn:
+  if fn is not None:
     fn = root_cert_path or "AppleRootCA-G3.cer"
 
   fn = os.path.expanduser(fn)
