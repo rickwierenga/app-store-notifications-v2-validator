@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="app-store-notifications-v2-validator",
-    version="0.0.5",
+    version="0.0.6",
     author="Rick Wierenga",
     author_email="rick_wierenga@icloud.com",
     description="AppStore notifications v2 Validator",
@@ -25,9 +25,9 @@ setuptools.setup(
     python_requires=">=3.6",
     install_requires=[
         "cffi==1.15.1",
-        "cryptography==39.0.1",
+        "cryptography==40.0.2",
         "pycparser==2.21",
-        "PyJWT==2.3.0",
+        "PyJWT==2.7.0",
         "pyOpenSSL==23.0.0"
     ]
 )
