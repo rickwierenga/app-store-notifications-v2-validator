@@ -6,7 +6,7 @@ Library to read and validate [App Store Server Notifications V2](https://develop
 pip install app-store-notifications-v2-validator
 ```
 
-Download "Apple Root CA - G3 Root" from https://www.apple.com/certificateauthority/. Store the file path in an environment variable named `APPLE_ROOT_CA` or put it in the directory where the code is run.
+Download "Apple Root CA - G3 Root" from https://www.apple.com/certificateauthority/. Store the file path in an environment variable named `APPLE_ROOT_CA` or pass file path as apple_root_cert_path param in asn2.parse or put it in the directory where the code is run.
 
 ## Usage
 

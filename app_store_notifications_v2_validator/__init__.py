@@ -16,18 +16,24 @@ def add_labels(key: str) -> bytes:
   return ("-----BEGIN CERTIFICATE-----\n" + key + "\n-----END CERTIFICATE-----").encode()
 
 
-fn = os.environ.get("APPLE_ROOT_CA", "AppleRootCA-G3.cer")
-fn = os.path.expanduser(fn)
-with open(fn, "rb") as f:
-  data = f.read()
-  root_cert = load_certificate(FILETYPE_ASN1, data)
+def _get_root_cert(root_cert_path):
 
+  fn = os.environ.get("APPLE_ROOT_CA")
+  if not fn:
+    fn = root_cert_path or "AppleRootCA-G3.cer"
+
+  fn = os.path.expanduser(fn)
+  with open(fn, "rb") as f:
+    data = f.read()
+    root_cert = load_certificate(FILETYPE_ASN1, data)
+
+  return root_cert
 
 class InvalidTokenError(Exception):
   pass
 
 
-def _decode_jws(token):
+def _decode_jws(token, root_cert_path):
   try:
     header = jwt.get_unverified_header(token)
 
@@ -44,7 +50,7 @@ def _decode_jws(token):
     public_key = first_cert.get_pubkey().to_cryptography_key()
 
     store = X509Store()
-    store.add_cert(root_cert)
+    store.add_cert(_get_root_cert(root_cert_path))
     ctx = X509StoreContext(store=store, certificate=first_cert, chain=chain)
     ctx.verify_certificate()
 
@@ -54,14 +60,14 @@ def _decode_jws(token):
     raise InvalidTokenError from err
 
 
-def parse(req_body):
+def parse(req_body, apple_root_cert_path=None):
   token = json.loads(req_body)["signedPayload"]
 
   # decode main token
-  payload = _decode_jws(token)
+  payload = _decode_jws(token, apple_root_cert_path)
 
   # decode signedTransactionInfo & substitute decoded into payload
-  signedTransactionInfo = _decode_jws(payload["data"]["signedTransactionInfo"])
+  signedTransactionInfo = _decode_jws(payload["data"]["signedTransactionInfo"], apple_root_cert_path)
   payload["data"]["signedTransactionInfo"] = signedTransactionInfo
 
   # decode signedRenewalInfo & substitute decoded into payload
@@ -70,4 +76,3 @@ def parse(req_body):
     payload["data"]["signedRenewalInfo"] = signedRenewalInfo
 
   return payload
-
