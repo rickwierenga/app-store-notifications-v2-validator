@@ -24,10 +24,10 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     python_requires=">=3.6",
     install_requires=[
-        "cffi==1.15.1",
-        "cryptography==40.0.2",
-        "pycparser==2.21",
-        "PyJWT==2.7.0",
-        "pyOpenSSL==23.1.1"
+        "cffi>=1.15.1",
+        "cryptography>=40.0.2",
+        "pycparser>=2.21",
+        "PyJWT>=2.7.0",
+        "pyOpenSSL>=23.1.1"
     ]
 )
