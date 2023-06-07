@@ -19,7 +19,7 @@ def add_labels(key: str) -> bytes:
 def _get_root_cert(root_cert_path):
 
   fn = os.environ.get("APPLE_ROOT_CA")
-  if fn is not None:
+  if fn is None:
     fn = root_cert_path or "AppleRootCA-G3.cer"
 
   fn = os.path.expanduser(fn)
@@ -65,6 +65,9 @@ def parse(req_body, apple_root_cert_path=None):
 
   # decode main token
   payload = _decode_jws(token, apple_root_cert_path)
+
+  if payload['notificationType'] == 'TEST':
+    return payload
 
   # decode signedTransactionInfo & substitute decoded into payload
   signedTransactionInfo = _decode_jws(payload["data"]["signedTransactionInfo"], apple_root_cert_path)
