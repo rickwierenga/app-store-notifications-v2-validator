@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="app-store-notifications-v2-validator",
-    version="0.0.7",
+    version="0.0.8",
     author="Rick Wierenga",
     author_email="rick_wierenga@icloud.com",
     description="AppStore notifications v2 Validator",
