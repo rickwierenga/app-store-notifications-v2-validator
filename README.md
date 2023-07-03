@@ -1,5 +1,7 @@
 # AppStore Notifications V2 Validator
 
+![downloads per month](https://img.shields.io/pypi/dm/app-store-notifications-v2-validator.svg)
+
 Library to read and validate [App Store Server Notifications V2](https://developer.apple.com/documentation/appstoreservernotifications/app_store_server_notifications_v2) in Python.
 
 ```
