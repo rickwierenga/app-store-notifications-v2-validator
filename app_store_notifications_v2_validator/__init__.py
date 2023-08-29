@@ -55,7 +55,7 @@ def _decode_jws(token, root_cert_path):
     ctx.verify_certificate()
 
     alg = header["alg"]
-    return jwt.decode(token, public_key, algorithms=[alg])
+    return jwt.decode(token, public_key, algorithms=["ES256"])
   except (ValueError, KeyError, jwt.exceptions.PyJWTError, X509StoreContextError) as err:
     raise InvalidTokenError from err
 
