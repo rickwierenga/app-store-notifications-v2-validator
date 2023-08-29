@@ -33,7 +33,7 @@ class InvalidTokenError(Exception):
   pass
 
 
-def _decode_jws(token, root_cert_path):
+def _decode_jws(token, root_cert_path, algorithms):
   try:
     header = jwt.get_unverified_header(token)
 
@@ -54,28 +54,27 @@ def _decode_jws(token, root_cert_path):
     ctx = X509StoreContext(store=store, certificate=first_cert, chain=chain)
     ctx.verify_certificate()
 
-    alg = header["alg"]
-    return jwt.decode(token, public_key, algorithms=["ES256"])
+    return jwt.decode(token, public_key, algorithms=algorithms)
   except (ValueError, KeyError, jwt.exceptions.PyJWTError, X509StoreContextError) as err:
     raise InvalidTokenError from err
 
 
-def parse(req_body, apple_root_cert_path=None):
+def parse(req_body, apple_root_cert_path=None, algorithms=["ES256"]):
   token = json.loads(req_body)["signedPayload"]
 
   # decode main token
-  payload = _decode_jws(token, root_cert_path=apple_root_cert_path)
+  payload = _decode_jws(token, root_cert_path=apple_root_cert_path, algorithms=algorithms)
 
   if payload['notificationType'] == 'TEST':
     return payload
 
   # decode signedTransactionInfo & substitute decoded into payload
-  signedTransactionInfo = _decode_jws(payload["data"]["signedTransactionInfo"], root_cert_path=apple_root_cert_path)
+  signedTransactionInfo = _decode_jws(payload["data"]["signedTransactionInfo"], root_cert_path=apple_root_cert_path, algorithms=algorithms)
   payload["data"]["signedTransactionInfo"] = signedTransactionInfo
 
   # decode signedRenewalInfo & substitute decoded into payload
   if "signedRenewalInfo" in payload["data"]:
-    signedRenewalInfo = _decode_jws(payload["data"]["signedRenewalInfo"], root_cert_path=apple_root_cert_path)
+    signedRenewalInfo = _decode_jws(payload["data"]["signedRenewalInfo"], root_cert_path=apple_root_cert_path, algorithms=algorithms)
     payload["data"]["signedRenewalInfo"] = signedRenewalInfo
 
   return payload
