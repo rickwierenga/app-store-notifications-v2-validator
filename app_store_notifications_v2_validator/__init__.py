@@ -65,7 +65,7 @@ def parse(req_body, apple_root_cert_path=None, algorithms=["ES256"]):
   # decode main token
   payload = _decode_jws(token, root_cert_path=apple_root_cert_path, algorithms=algorithms)
 
-  if payload['notificationType'] == 'TEST':
+  if "data" not in payload:
     return payload
 
   # decode signedTransactionInfo & substitute decoded into payload
